@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data & Marketing Intelligence Lab — Valesca Bravo</title>
+  <meta name="description" content="15 interactive tools across Data Analytics, Marketing Measurement, Privacy & Ethics, Sustainability, Agile and Cloud Computing. Built in Dublin, Ireland by Valesca Bravo — at the heart of EU data regulation." />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1d085e',
+            teal: '#13d6c1',
+            tealDark: '#0a9a88',
+          },
+          fontFamily: {
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"DM Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1d085e;
+      --teal: #13d6c1;
+      --teal-dark: #0a9a88;
+      --bg: #f4f5f8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); font-family: 'DM Sans', system-ui, sans-serif; }
+
+    /* Hero gradient */
+    .hero-bg {
+      background: linear-gradient(135deg, #0d0430 0%, #1d085e 50%, #0d3b38 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 80% 40%, rgba(19,214,193,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 39px, rgba(19,214,193,0.04) 39px, rgba(19,214,193,0.04) 40px
+      ), repeating-linear-gradient(
+        90deg, transparent, transparent 39px, rgba(19,214,193,0.04) 39px, rgba(19,214,193,0.04) 40px
+      );
+      pointer-events: none;
+    }
+
+    /* Counter strip */
+    .counter-strip {
+      background: rgba(19,214,193,0.08);
+      border: 1px solid rgba(19,214,193,0.2);
+      border-radius: 2px;
+    }
+
+    /* Audience strip */
+    .audience-card {
+      border-left: 3px solid var(--teal);
+      background: #fff;
+      border-radius: 0 4px 4px 0;
+      padding: 14px 16px;
+      transition: box-shadow 200ms;
+    }
+    .audience-card:hover {
+      box-shadow: 0 4px 16px rgba(19,214,193,0.12);
+    }
+
+    /* Category heading underline */
+    .cat-heading {
+      display: inline-block;
+      position: relative;
+      padding-bottom: 6px;
+    }
+    .cat-heading::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%; height: 2px;
+      background: var(--teal);
+    }
+
+    /* Tool card */
+    .tool-card {
+      background: #fff;
+      border: 1px solid #e2e4ec;
+      border-radius: 6px;
+      transition: box-shadow 200ms, transform 200ms, border-color 200ms;
+    }
+    .tool-card:hover {
+      box-shadow: 0 8px 28px rgba(19,214,193,0.18);
+      transform: translateY(-2px);
+      border-color: var(--teal);
+    }
+
+    /* Coming Soon card */
+    .coming-soon-card {
+      background: #f9fafb;
+      border: 2px dashed #d1d5db;
+      border-radius: 6px;
+      transition: border-color 200ms;
+    }
+    .coming-soon-card:hover {
+      border-color: rgba(19,214,193,0.4);
+    }
+
+    /* Open Lab button */
+    .btn-lab {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.02em;
+      padding: 7px 14px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 200ms;
+    }
+    .btn-lab:hover { background: var(--teal-dark); color: #fff; }
+
+    /* Level badges */
+    .badge-foundational { background: #e8e9f0; color: #555770; }
+    .badge-intermediate  { background: rgba(19,214,193,0.15); color: var(--teal-dark); }
+    .badge-advanced      { background: var(--navy); color: #fff; }
+
+    /* VB avatar */
+    .vb-avatar {
+      width: 64px; height: 64px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--navy);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    footer { background: var(--navy); }
+
+    /* Nav link */
+    .nav-link {
+      color: var(--navy);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 180ms, color 180ms;
+    }
+    .nav-link:hover { border-color: var(--teal); color: var(--teal-dark); }
+    .nav-link-white {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.85rem;
+      font-weight: 400;
+      text-decoration: none;
+      transition: color 180ms;
+    }
+    .nav-link-white:hover { color: var(--teal); }
+
+    /* Category icon circle */
+    .cat-icon {
+      width: 44px; height: 44px;
+      background: rgba(29,8,94,0.06);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    /* Chip */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(19,214,193,0.18);
+      color: var(--teal);
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(19,214,193,0.4);
+    }
+
+    /* Dublin location badge */
+    .location-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    /* Scroll reveal */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const CATEGORIES = [
+  {
+    id: 'data-analytics',
+    icon: '📊',
+    title: 'Data Analytics',
+    description: 'From raw data to actionable insight — the full analytical stack',
+    tools: [
+      {
+        title: 'Analytics Pyramid: Data → Decisions',
+        desc: 'A visual framework explaining how raw data becomes business decisions — designed for analysts and non-technical stakeholders alike.',
+        url: 'https://valescabravo.github.io/analytics-pyramid/',
+        level: 'Foundational',
+      },
+      {
+        title: 'Data Analytics Learning Library',
+        desc: 'Python & R algorithms with real marketing use cases. Regression, clustering, A/B testing and Random Forest with working code.',
+        url: 'https://valescabravo.github.io/data-analytics-library/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'SQL Analytics Lab',
+        desc: 'JOINs, window functions, CTEs and query optimisation with campaign data. Built to make SQL legible to any analyst.',
+        url: 'https://valescabravo.github.io/sql-analytics-lab/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'Power BI + DAX Lab',
+        desc: 'Star schema design, CALCULATE, time intelligence functions and an interactive ROAS calculator.',
+        url: 'https://valescabravo.github.io/powerbi-dax-lab/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'Excel Analytics Lab',
+        desc: 'XLOOKUP, Power Query, LINEST and cohort analysis. Includes a decision guide: when to use Excel vs Python vs Power BI.',
+        url: 'https://valescabravo.github.io/excel-analytics-lab/',
+        level: 'Foundational',
+      },
+    ],
+  },
+  {
+    id: 'marketing-measurement',
+    icon: '📡',
+    title: 'Marketing Measurement',
+    description: 'Privacy-safe measurement frameworks for modern marketing teams',
+    tools: [
+      {
+        title: 'Attribution & Mix Modelling',
+        desc: 'Multi-Touch Attribution, Media Mix Modelling (Meridian, Robyn) and incrementality testing — the measurement trifecta explained.',
+        url: 'https://valescabravo.github.io/attribution-mmm/',
+        level: 'Advanced',
+      },
+      {
+        title: 'Unified Marketing Measurement',
+        desc: 'How MTA, MMM and incrementality work together in a single privacy-safe decision framework.',
+        url: 'https://valescabravo.github.io/unified-measurement/',
+        level: 'Advanced',
+      },
+      {
+        title: 'Customer Journey Mapping',
+        desc: 'An interactive circular journey model from Awareness to Advocacy, with tools and KPIs at each stage.',
+        url: 'https://valescabravo.github.io/customer-journey/',
+        level: 'Foundational',
+      },
+    ],
+  },
+  {
+    id: 'privacy-ethics',
+    icon: '🔐',
+    title: 'Privacy & Ethics',
+    description: 'Regulatory-first thinking for data and AI in the EU — built in Ireland',
+    tools: [
+      {
+        title: 'Data Privacy & Marketing 2026',
+        desc: 'Cookieless strategy, GDPR enforcement and DPC context for EU marketers. Grounded in the Irish regulatory landscape.',
+        url: 'https://valescabravo.github.io/data-privacy-2026/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'AI Ethics & Governance',
+        desc: '5 pillars of responsible AI, EU AI Act 2026 implementation phases and Ireland\'s emerging regulatory framework.',
+        url: 'https://valescabravo.github.io/ai-ethics-governance/',
+        level: 'Intermediate',
+      },
+    ],
+  },
+  {
+    id: 'sustainability',
+    icon: '🌱',
+    title: 'Sustainability',
+    description: 'Carbon measurement and green strategy for digital marketing',
+    tools: [
+      {
+        title: 'Sustainable Marketing & Green Data',
+        desc: 'How to measure campaign carbon footprint, meet CSRD obligations and build a climate tech stack that works.',
+        url: 'https://valescabravo.github.io/sustainable-marketing/',
+        level: 'Intermediate',
+      },
+    ],
+  },
+  {
+    id: 'cloud-computing',
+    icon: '☁️',
+    title: 'Cloud Computing',
+    description: 'Cloud architecture and data infrastructure for analytics at scale',
+    tools: [
+      {
+        title: 'Google Cloud Platform Lab',
+        desc: 'BigQuery, Looker Studio, Vertex AI and data pipeline architecture for analytics teams.',
+        url: 'https://valescabravo.github.io/gcp-lab/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'AWS Analytics Lab',
+        desc: 'S3, Redshift, SageMaker and cloud architecture patterns for data and marketing workloads.',
+        url: 'https://valescabravo.github.io/aws-lab/',
+        level: 'Intermediate',
+      },
+      {
+        title: 'Azure Cloud Lab',
+        desc: 'Azure Synapse, Power BI Service, Azure ML and enterprise data architecture for analytics.',
+        url: 'https://valescabravo.github.io/azure-lab/',
+        level: 'Intermediate',
+      },
+    ],
+  },
+  {
+    id: 'agile',
+    icon: '🏃',
+    title: 'Agile & Project Management',
+    description: 'Scrum, Kanban, SAFe and the tools that keep data and marketing teams moving',
+    tools: [
+      {
+        title: 'Agile PM Lab',
+        desc: 'Scrum, Kanban and SAFe compared side by side. Tool matrix covering Jira, Linear, Notion and Azure DevOps — plus an interactive quiz.',
+        url: 'https://valescabravo.github.io/agile-pm-lab/',
+        level: 'Foundational',
+      },
+    ],
+  },
+];
+
+
+
+const AUDIENCE = [
+  {
+    icon: '📊',
+    role: 'Analysts & Data Professionals',
+    desc: 'Frameworks, code patterns and measurement models — from SQL fundamentals to advanced MMM.',
+  },
+  {
+    icon: '📣',
+    role: 'Marketing Teams',
+    desc: 'Connect data to decisions. Attribution, cookieless strategy and customer journey — explained without jargon.',
+  },
+  {
+    icon: '🔍',
+    role: 'Hiring Managers',
+    desc: 'See how I think, structure and explain complex topics — to any audience, at any level.',
+  },
+];
+
+// ── BADGE ─────────────────────────────────────────────────────────────────────
+
+function LevelBadge({ level }) {
+  const map = {
+    Foundational: 'badge-foundational',
+    Intermediate:  'badge-intermediate',
+    Advanced:      'badge-advanced',
+  };
+  return (
+    <span
+      className={`${map[level]} text-xs font-mono font-medium px-2 py-0.5 rounded-sm tracking-wide`}
+      style={{ fontSize: '0.7rem', letterSpacing: '0.05em' }}
+    >
+      {level}
+    </span>
+  );
+}
+
+// ── TOOL CARD ─────────────────────────────────────────────────────────────────
+
+function ToolCard({ tool }) {
+  return (
+    <div className="tool-card p-5 flex flex-col gap-3">
+      <div className="flex items-start justify-between gap-2">
+        <h3
+          className="font-semibold leading-snug"
+          style={{ color: 'var(--navy)', fontSize: '0.92rem' }}
+        >
+          {tool.title}
+        </h3>
+        <LevelBadge level={tool.level} />
+      </div>
+      <p className="text-gray-500 leading-snug flex-1" style={{ fontSize: '0.82rem' }}>
+        {tool.desc}
+      </p>
+      <a
+        href={tool.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-lab self-start"
+      >
+        Open Lab <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  );
+}
+
+// ── CATEGORY SECTION ──────────────────────────────────────────────────────────
+
+function CategorySection({ cat, index }) {
+  return (
+    <section className="mb-14 fade-up" style={{ animationDelay: `${index * 0.08}s` }}>
+      <div className="flex items-center gap-3 mb-2">
+        <div className="cat-icon">{cat.icon}</div>
+        <div>
+          <h2
+            className="cat-heading font-display font-bold"
+            style={{ color: 'var(--navy)', fontSize: '1.15rem' }}
+          >
+            {cat.title}
+          </h2>
+        </div>
+      </div>
+      <p className="text-gray-500 mb-5 mt-1" style={{ fontSize: '0.84rem' }}>
+        {cat.description}
+      </p>
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {cat.tools.map((tool, i) => (
+          <ToolCard key={i} tool={tool} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────────────────────────────
+
+function App() {
+  return (
+    <>
+      {/* ── NAV ── */}
+      <nav className="bg-white border-b border-gray-100 sticky top-0 z-50" style={{ boxShadow: '0 1px 0 #e2e4ec' }}>
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <span className="font-display font-bold text-lg" style={{ color: 'var(--navy)' }}>
+            Valesca Bravo<span style={{ color: 'var(--teal)' }}>.</span>
+          </span>
+          <div className="flex items-center gap-5">
+            <a
+              href="https://valescabravo.github.io/"
+              className="nav-link"
+            >
+              ← Portfolio
+            </a>
+            <a
+              href="https://www.linkedin.com/in/valescabravo/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-link"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── HERO ── */}
+      <header className="hero-bg text-white px-4 py-16 md:py-24 relative">
+        <div className="max-w-5xl mx-auto relative z-10 flex flex-col gap-5">
+          <div className="fade-up flex flex-wrap items-center gap-2 mb-1">
+            <span className="chip">2026</span>
+            <span className="location-badge">
+              <span aria-hidden="true">📍</span> Dublin, Ireland — EU Data Regulation Hub
+            </span>
+          </div>
+          <div className="fade-up">
+            <h1
+              className="font-display leading-tight"
+              style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', color: '#fff' }}
+            >
+              Data &amp; Marketing
+              <br />
+              <span style={{ color: 'var(--teal)' }}>Intelligence Lab</span>
+            </h1>
+          </div>
+          <p
+            className="fade-up delay-1 text-gray-300 max-w-xl leading-relaxed"
+            style={{ fontSize: '1rem' }}
+          >
+            15 interactive tools across data analytics, marketing measurement, privacy, sustainability,
+            agile and cloud computing — built in Dublin, at the heart of EU data regulation. Each framework is designed
+            to be explored independently, or explained clearly to any audience.
+          </p>
+          {/* Counter strip */}
+          <div
+            className="counter-strip fade-up delay-2 inline-flex flex-wrap gap-5 px-5 py-3 self-start mt-2"
+            style={{ borderRadius: '3px' }}
+          >
+            {[
+              { n: '15', label: 'Interactive Tools' },
+              { n: '6',  label: 'Disciplines' },
+              { n: '3',  label: 'Levels' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-baseline gap-2">
+                <span
+                  className="font-display font-bold"
+                  style={{ color: 'var(--teal)', fontSize: '1.5rem' }}
+                >
+                  {item.n}
+                </span>
+                <span className="text-gray-400 text-sm">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* ── AUDIENCE STRIP ── */}
+      <div className="border-b border-gray-100" style={{ background: '#f0f1f7' }}>
+        <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {AUDIENCE.map((a, i) => (
+            <div key={i} className="audience-card">
+              <p
+                className="font-semibold mb-1"
+                style={{ color: 'var(--navy)', fontSize: '0.85rem' }}
+              >
+                <span className="mr-2" aria-hidden="true">{a.icon}</span>{a.role}
+              </p>
+              <p className="text-gray-500" style={{ fontSize: '0.78rem', lineHeight: '1.5' }}>
+                {a.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── MAIN ── */}
+      <main className="max-w-5xl mx-auto px-4 py-12">
+        {CATEGORIES.map((cat, i) => (
+          <CategorySection key={cat.id} cat={cat} index={i} />
+        ))}
+      </main>
+
+      {/* ── ABOUT ── */}
+      <section className="bg-white border-t border-gray-100 px-4 py-12">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row gap-6 items-start">
+          <div className="vb-avatar">VB</div>
+          <div className="flex flex-col gap-3 max-w-xl">
+            <h2
+              className="font-display font-bold"
+              style={{ color: 'var(--navy)', fontSize: '1.1rem' }}
+            >
+              About this Lab
+            </h2>
+            <p className="text-gray-600 leading-relaxed text-sm">
+              I'm Valesca Bravo — Data Analyst and Marketing professional based in Dublin, Ireland.
+              I built this lab to make technical frameworks genuinely useful: precise enough for a specialist,
+              clear enough for a non-technical stakeholder. The tools span from foundational concepts to
+              advanced measurement models, all grounded in an EU regulatory context.
+              If your team needs someone who can build and explain — this is how I think.
+            </p>
+            <div className="flex gap-4 mt-1">
+              <a
+                href="https://www.linkedin.com/in/valescabravo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link"
+                style={{ color: 'var(--navy)', fontWeight: 600, fontSize: '0.82rem' }}
+              >
+                LinkedIn ↗
+              </a>
+              <a
+                href="https://valescabravo.github.io/"
+                className="nav-link"
+                style={{ color: 'var(--navy)', fontWeight: 600, fontSize: '0.82rem' }}
+              >
+                Portfolio ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="px-4 py-8">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-gray-400 text-xs">
+            © 2026 Valesca Bravo — Data &amp; Marketing Intelligence Lab
+          </p>
+          <div className="flex gap-5">
+            <a
+              href="https://valescabravo.github.io/"
+              className="nav-link-white"
+              style={{ fontSize: '0.8rem' }}
+            >
+              Portfolio
+            </a>
+            <a
+              href="https://www.linkedin.com/in/valescabravo/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-link-white"
+              style={{ fontSize: '0.8rem' }}
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
