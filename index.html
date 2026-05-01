@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data & Marketing Intelligence Lab — Valesca Bravo</title>
-  <meta name="description" content="15 interactive tools across Data Analytics, Marketing Measurement, Privacy & Ethics, Sustainability, Agile and Cloud Computing. Built in Dublin, Ireland by Valesca Bravo — at the heart of EU data regulation." />
+  <meta name="description" content="14 interactive tools across Data Analytics, Marketing Measurement, Privacy & Ethics, Sustainability and Cloud Computing. Built in Dublin, Ireland by Valesca Bravo — at the heart of EU data regulation." />
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -70,18 +70,6 @@
       background: rgba(19,214,193,0.08);
       border: 1px solid rgba(19,214,193,0.2);
       border-radius: 2px;
-    }
-
-    /* Audience strip */
-    .audience-card {
-      border-left: 3px solid var(--teal);
-      background: #fff;
-      border-radius: 0 4px 4px 0;
-      padding: 14px 16px;
-      transition: box-shadow 200ms;
-    }
-    .audience-card:hover {
-      box-shadow: 0 4px 16px rgba(19,214,193,0.12);
     }
 
     /* Category heading underline */
@@ -367,24 +355,6 @@ const CATEGORIES = [
   },
 ];
 
-const AUDIENCE = [
-  {
-    icon: '📊',
-    role: 'Analysts & Data Professionals',
-    desc: 'Frameworks, code patterns and measurement models — from SQL fundamentals to advanced MMM.',
-  },
-  {
-    icon: '📣',
-    role: 'Marketing Teams',
-    desc: 'Connect data to decisions. Attribution, cookieless strategy and customer journey — explained without jargon.',
-  },
-  {
-    icon: '🔍',
-    role: 'Hiring Managers',
-    desc: 'See how I think, structure and explain complex topics — to any audience, at any level.',
-  },
-];
-
 // ── BADGE ─────────────────────────────────────────────────────────────────────
 
 function LevelBadge({ level }) {
@@ -513,9 +483,9 @@ function App() {
             className="fade-up delay-1 text-gray-300 max-w-xl leading-relaxed"
             style={{ fontSize: '1rem' }}
           >
-            15 interactive tools across data analytics, marketing measurement, privacy, sustainability,
-            agile and cloud computing — built in Dublin, at the heart of EU data regulation. Each framework is designed
-            to be explored independently, or explained clearly to any audience.
+            14 interactive tools across data analytics, marketing measurement, privacy, sustainability
+            and cloud computing — built in Dublin, at the heart of EU data regulation. Built to be used
+            by analysts and understood by anyone in the room.
           </p>
           {/* Counter strip */}
           <div
@@ -523,8 +493,8 @@ function App() {
             style={{ borderRadius: '3px' }}
           >
             {[
-              { n: '15', label: 'Interactive Tools' },
-              { n: '6',  label: 'Disciplines' },
+              { n: '14', label: 'Interactive Tools' },
+              { n: '5',  label: 'Disciplines' },
               { n: '3',  label: 'Levels' },
             ].map((item, i) => (
               <div key={i} className="flex items-baseline gap-2">
@@ -540,25 +510,6 @@ function App() {
           </div>
         </div>
       </header>
-
-      {/* ── AUDIENCE STRIP ── */}
-      <div className="border-b border-gray-100" style={{ background: '#f0f1f7' }}>
-        <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {AUDIENCE.map((a, i) => (
-            <div key={i} className="audience-card">
-              <p
-                className="font-semibold mb-1"
-                style={{ color: 'var(--navy)', fontSize: '0.85rem' }}
-              >
-                <span className="mr-2" aria-hidden="true">{a.icon}</span>{a.role}
-              </p>
-              <p className="text-gray-500" style={{ fontSize: '0.78rem', lineHeight: '1.5' }}>
-                {a.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── MAIN ── */}
       <main className="max-w-5xl mx-auto px-4 py-12">
